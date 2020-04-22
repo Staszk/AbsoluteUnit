@@ -35,15 +35,15 @@ namespace AbsoluteUnit {
         }
         #endregion
 
-        #region Objects
-        public static Result AreEqual(object expected, object actual, string message)
+        #region Monobehaviour
+        public static Result AreEqual(MonoBehaviour expected, MonoBehaviour actual, string message)
         {
-            TestResult tr = expected == actual ? TestResult.Pass : TestResult.Fail;
+            TestResult tr = expected.GetType() == actual.GetType() ? TestResult.Pass : TestResult.Fail;
 
             return new Result(message, tr);
         }
 
-        public static Result AreEqual(object expected, object actual)
+        public static Result AreEqual(MonoBehaviour expected, MonoBehaviour actual)
         {
             return AreEqual(expected, actual, string.Empty);
         }
