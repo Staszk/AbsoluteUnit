@@ -29,7 +29,7 @@ public static class EXPCalculator
         {EnemyList.ShinraShockTrooper,  80},
     };
 
-    public static int CalculateEXP(int playerLevel, int enemyLevel, EnemyList enemy, float modifier = 0f)
+    public static int CalculateEXP(int playerLevel, int enemyLevel, EnemyList enemy, float modifier = 1f)
     {
         int levelDiff = enemyLevel - playerLevel;
         float levelModifier = 1 + 0.015f * levelDiff;
