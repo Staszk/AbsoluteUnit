@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using AbsoluteUnit;
 
-public class EXPCalculatorTestDriver
+public class EXPCalculatorTestDriver : TestObject
 {
 
-    //[Test] -- Should be able to mark this with an attribute
-    public Result EXPTestCaseOne()
+    [Test] // Should be able to mark this with an attribute
+    static public Result EXPTestCaseOne()
     {
         int playerLevel = 1;
         int enemyLevel = 1;
@@ -21,8 +21,8 @@ public class EXPCalculatorTestDriver
     }
 
     // Test case two should fail because expected is incorrect
-    //[Test]
-    public Result EXPTestCaseTwo()
+    [Test]
+    static public Result EXPTestCaseTwo()
     {
         int playerLevel = 5;
         int enemyLevel = 3;
