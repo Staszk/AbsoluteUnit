@@ -11,7 +11,7 @@ using AbsoluteUnit;
 
 public class TestRunner : EditorWindow
 {
-    static public List<TestMethod> methodList = new List<TestMethod>();
+    static public Dictionary<string, List<TestMethod>> sourceFileToMethods = new Dictionary<string, List<TestMethod>>();
 
     [MenuItem("Absolute Unit/Test Runner")]
     static void Init()
@@ -22,18 +22,21 @@ public class TestRunner : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("Test Methods", EditorStyles.boldLabel);
-
         EditorGUILayout.BeginVertical();
 
-        for (int i = 0; i < methodList.Count; i++)
+        GUIStyle style = new GUIStyle();
+        style.alignment = TextAnchor.MiddleCenter;
+        style.fontStyle = FontStyle.Bold;
+        style.normal.textColor = new Color(0.4f, 0, 0.4f);
+
+        foreach (string file in sourceFileToMethods.Keys)
         {
-            if (methodList[i] != null)
+            GUILayout.Label("\n" + file, style);
+            foreach (TestMethod t in sourceFileToMethods[file])
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(methodList[i].methodName);
-                GUILayout.Space(10);
-                EditorGUILayout.LabelField(methodList[i].GetTestResult().ToString(), methodList[i].GetTestResultTextColor());
+                GUILayout.Label(t.methodName);
+                GUILayout.Label(t.GetTestResult() + " ", t.GetTestResultTextColor());
                 EditorGUILayout.EndHorizontal();
             }
         }
@@ -55,18 +58,25 @@ public class TestRunner : EditorWindow
 
     private static void Refresh()
     {
-        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
-        Type[] type2 = (from Type t in types where t.IsSubclassOf(typeof(TestObject)) select t).ToArray();
+        sourceFileToMethods.Clear();
 
-        foreach (Type t2 in type2)
+        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+        Type[] testObjectTypes = (from Type type in types where type.IsSubclassOf(typeof(TestObject)) select type).ToArray();
+
+        foreach (Type t in testObjectTypes)
         {
-            foreach (var method in t2.GetMethods())
+            foreach (var method in t.GetMethods())
             {
                 var attributes = method.GetCustomAttributes(typeof(Test), true);
 
                 if (attributes.Length > 0)
                 {
-                    methodList.Add(new TestMethod(method.Name, method));
+                    if(!sourceFileToMethods.ContainsKey(t.Name))
+                    {
+                        sourceFileToMethods.Add(t.Name, new List<TestMethod>());
+                    }
+
+                    sourceFileToMethods[t.Name].Add(new TestMethod(method.Name, method));
                 }
             }
 
@@ -75,9 +85,12 @@ public class TestRunner : EditorWindow
 
     private void TestAllMethods()
     {
-        foreach(TestMethod t in methodList)
+        foreach(string file in sourceFileToMethods.Keys)
         {
-            t.Test();
+            foreach (TestMethod t in sourceFileToMethods[file])
+            {
+                t.Test();
+            }
         }
     }
 
@@ -123,6 +136,7 @@ public class TestRunner : EditorWindow
 
             GUIStyle style = new GUIStyle();
             style.normal.textColor = color;
+            style.alignment = TextAnchor.UpperRight;
 
             return style;
         }
