@@ -1,6 +1,6 @@
 ﻿
 namespace AbsoluteUnit {
-    public enum TestResult { Pass, Fail, Warning, Inconclusive }
+    public enum TestResult { Pass, Fail, Warning, Inconclusive, NotTested }
 
     public class Result
     {
