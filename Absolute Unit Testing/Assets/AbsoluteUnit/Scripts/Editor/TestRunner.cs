@@ -38,6 +38,9 @@ public class TestRunner : EditorWindow
                 GUILayout.Label(t.methodName);
                 GUILayout.Label(t.GetTestResult() + " ", t.GetTestResultTextColor());
                 EditorGUILayout.EndHorizontal();
+
+                if(t.GetResultMessage() != "" && t.GetResultMessage() != null && t.GetResultMessage() != " ")
+                    EditorGUILayout.HelpBox(t.GetResultMessage(), MessageType.None);
             }
         }
 
