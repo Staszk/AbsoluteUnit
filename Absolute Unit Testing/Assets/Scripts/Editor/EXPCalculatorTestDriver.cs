@@ -17,10 +17,10 @@ public class EXPCalculatorTestDriver : TestObject
         int expected = 750;
         int actual = EXPCalculator.CalculateEXP(playerLevel, enemyLevel, enemy, modifier);
 
-        return Verify.AreEqual(expected, actual);
+        return Verify.AreEqual(expected, actual, "EXP for enemy is not modified.");
     }
 
-    // Test case two should fail because expected is incorrect
+    // Test case two fails because the level modifier is not correct in the function
     [Test]
     static public Result EXPTestCaseTwo()
     {
@@ -29,9 +29,9 @@ public class EXPCalculatorTestDriver : TestObject
         float modifier = 1f;
         EXPCalculator.EnemyList enemy = EXPCalculator.EnemyList.ShinraSecurityOfficer;
 
-        int expected = 35;
+        int expected = 34;
         int actual = EXPCalculator.CalculateEXP(playerLevel, enemyLevel, enemy, modifier);
 
-        return Verify.AreEqual(expected, actual);
+        return Verify.AreEqual(expected, actual, "EXP for enemy is correctly modified");
     }
 }

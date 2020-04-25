@@ -34,6 +34,6 @@ public static class EXPCalculator
         int levelDiff = enemyLevel - playerLevel;
         float levelModifier = 1 + 0.015f * levelDiff;
 
-        return Mathf.RoundToInt(BaseEXPChart[enemy] * levelModifier * modifier);
+        return Mathf.RoundToInt(BaseEXPChart[enemy] * 1f * 1f);
     }
 }
